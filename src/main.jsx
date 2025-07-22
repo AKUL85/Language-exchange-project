@@ -14,6 +14,7 @@ import SignUp from './component/SignUp/SignUp';
 import AuthProvider from './Auth/AuthProvider';
 import Home from './component/Home/Home'
 import AddTutorial from './Pages/AddTutorial';
+import FindTutors from './Pages/FindTutors';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -63,6 +64,11 @@ const router = createBrowserRouter([
         </motion.div>
 
 
+      },
+      {
+        path:'/find-tutors',
+        element:<FindTutors></FindTutors>,
+        loader:()=>fetch('http://localhost:3000/tutors'),
       }
     ]
   },
