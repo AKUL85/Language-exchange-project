@@ -1,42 +1,39 @@
-import React, { useRef, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useRef, useState, useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
     Menu,
     X,
     Sun,
     Moon,
-    User,
     LogOut,
     BookOpen,
     Users,
     PlusCircle,
     BookMarked,
-    Calendar,
-    Coins
+    Calendar
 } from 'lucide-react';
-import { motion } from "motion/react"
-import { scale, AnimatePresence } from 'framer-motion';
-import { div } from 'framer-motion/client';
+import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from '../../Auth/AuthProvider';
+
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import { useTheme } from '../../Auth/ThemeProvider';
 
-
-function Navbar(props) {
-    const { user,signOutUser } = useAuth();
-    const [mode, setMode] = useState('false')
-    const [isProfileOpen, setIsProfileOpen] = useState(false)
-    const [isMenuOpen, setIsMenuOpen] = useState(false)
+function Navbar() {
+    const { user, signOutUser } = useAuth();
+    const { theme, toggleTheme } = useTheme();
+    const [isProfileOpen, setIsProfileOpen] = useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
     const location = useLocation();
-    const profileRef = useRef(null)
-    const handleToggolMode = () => {
-        setMode(!mode);
-    }
+    const navigate = useNavigate();
+    const profileRef = useRef(null);
+
+    // Logout
     const handleLogout = () => {
+        console.log("Logout clicked");
         signOutUser()
             .then(() => {
                 toast.success('Logged out successfully!');
-                navigate('/login'); // optional redirect
+                navigate('/login');
             })
             .catch((error) => {
                 console.error('Logout error:', error);
@@ -44,68 +41,85 @@ function Navbar(props) {
             });
     };
 
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+            if (profileRef.current && !profileRef.current.contains(e.target)) {
+                setIsProfileOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
     const navItems = [
         { name: 'Home', path: '/', icon: BookOpen },
         { name: 'Find Tutors', path: '/find-tutors', icon: Users },
+        ...(user ? [
+            { name: 'Add Tutorial', path: '/add-tutorial', icon: PlusCircle },
+            { name: 'My Tutorials', path: '/my-tutorials', icon: BookMarked },
+            { name: 'My Booked Tutors', path: '/my-booked-tutors', icon: Calendar },
+        ] : [])
+    ];
 
-        { name: 'Add Tutorial', path: '/add-tutorial', icon: PlusCircle },
-        { name: 'My Tutorials', path: '/my-tutorials', icon: BookMarked },
-        { name: 'My Booked Tutors', path: '/my-booked-tutors', icon: Calendar },
-
-    ]
     return (
         <motion.nav
             initial={{ y: -100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.5 }}
-            className='stickey top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700'
+            className="sticky top-0 z-[9999] bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700"
         >
-            <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
-                <div className='flex justify-between  items-center h-16'>
-                    <Link to='/' className='flex items-center space-x-2'>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="flex justify-between items-center h-16">
+                    {/* Logo */}
+                    <Link to="/" className="flex items-center space-x-2">
                         <motion.div
                             whileHover={{ scale: 1.1, rotate: 360 }}
                             transition={{ duration: 0.5 }}
-                            className='w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center '
+                            className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center"
                         >
-                            <BookOpen className='w-5 h-5 text-white'></BookOpen>
+                            <BookOpen className="w-5 h-5 text-white" />
                         </motion.div>
-                        <span className='text-xl font-bold text-gray-900 dark:text-white'>  LinguaConnect</span>
+                        <span className="text-xl font-bold text-gray-900 dark:text-white">
+                            LinguaConnect
+                        </span>
                     </Link>
-                    <div className=' hidden md:flex items-center space-x-8'>
-                        {
-                            navItems.map((item) => {
-                                const Icon = item.icon;
-                                return (
-                                    <Link
-                                        key={item.path}
-                                        to={item.path}
-                                        className={`flex items-center space-x-1 px-3 py-2 rounded-lg transition-colors duration-200 ${location.pathname === item.path ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
-                                            : 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-800'}`}
-                                    >
-                                        <Icon className='w-4 h-4'></Icon>
-                                        <span className='text-sm font-medium'>{item.name}</span>
-                                    </Link>
-                                );
-                            }
-                            )
-                        }
+
+                    {/* Desktop Nav */}
+                    <div className="hidden md:flex items-center space-x-8">
+                        {navItems.map((item) => {
+                            const Icon = item.icon;
+                            return (
+                                <Link
+                                    key={item.path}
+                                    to={item.path}
+                                    className={`flex items-center space-x-1 px-3 py-2 rounded-lg transition-colors duration-200 ${
+                                        location.pathname === item.path
+                                            ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
+                                            : 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-800'
+                                    }`}
+                                >
+                                    <Icon className="w-4 h-4" />
+                                    <span className="text-sm font-medium">{item.name}</span>
+                                </Link>
+                            );
+                        })}
                     </div>
-                    <div className='flex items-center space-x-3'>
+
+                    {/* Right Section */}
+                    <div className="flex items-center space-x-3">
+                        {/* Dark Mode Toggle */}
                         <motion.button
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}
-                            className='p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors'
-
-                            onClick={handleToggolMode}
+                            className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                            onClick={toggleTheme} // Use context's toggleTheme
                         >
-                            {
-                                mode ? <Sun className='h-5 w-5'></Sun> : <Moon className='h-5 w-5'></Moon>
-                            }
-
+                            {theme === 'light' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
                         </motion.button>
-                        {user ?
-                            (<div className='relative' ref={profileRef}>
+
+                        {/* Profile / Login */}
+                        {user ? (
+                            <div className="relative" ref={profileRef}>
                                 <motion.button
                                     whileHover={{ scale: 1.05 }}
                                     whileTap={{ scale: 0.95 }}
@@ -114,18 +128,23 @@ function Navbar(props) {
                                 >
                                     <img
                                         className="w-8 h-8 rounded-full object-cover"
-                                        src={user?.photoURL || 'https://img.daisyui.com/images/profile/demo/spiderperson@192.webp'}
+                                        src={
+                                            user?.photoURL ||
+                                            'https://img.daisyui.com/images/profile/demo/spiderperson@192.webp'
+                                        }
                                         alt="User profile"
                                         onError={(e) => {
-                                            e.target.onerror = null; // prevent infinite loop
-                                            e.target.src = 'https://img.daisyui.com/images/profile/demo/spiderperson@192.webp';
+                                            e.target.onerror = null;
+                                            e.target.src =
+                                                'https://img.daisyui.com/images/profile/demo/spiderperson@192.webp';
                                         }}
                                     />
-
                                     <span className="hidden sm:block text-sm font-medium text-gray-700 dark:text-gray-300">
                                         {user.displayName || 'User'}
                                     </span>
                                 </motion.button>
+
+                                {/* Dropdown */}
                                 <AnimatePresence>
                                     {isProfileOpen && (
                                         <motion.div
@@ -133,11 +152,13 @@ function Navbar(props) {
                                             animate={{ opacity: 1, y: 0 }}
                                             exit={{ opacity: 0, y: -10 }}
                                             transition={{ duration: 0.2 }}
-                                            className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1"
+                                            className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-[99999]"
                                         >
                                             <div className="px-4 py-2 text-sm text-gray-700 dark:text-gray-300 border-b border-gray-200 dark:border-gray-700">
                                                 <p className="font-medium">{user.displayName}</p>
-                                                <p className="text-xs text-gray-500 dark:text-gray-400">{user.email}</p>
+                                                <p className="text-xs text-gray-500 dark:text-gray-400">
+                                                    {user.email}
+                                                </p>
                                             </div>
                                             <button
                                                 onClick={handleLogout}
@@ -149,31 +170,30 @@ function Navbar(props) {
                                         </motion.div>
                                     )}
                                 </AnimatePresence>
+                            </div>
+                        ) : (
+                            <Link
+                                to="/login"
+                                className="px-4 py-2 rounded-2xl text-white font-medium bg-gray-950 border-0 hover:shadow-[0_0_12px_4px_rgba(168,85,247,0.6)] transition-shadow"
+                            >
+                                Login
+                            </Link>
+                        )}
 
-                            </div>) :
-                            (<div>
-                               
-                                <Link
-                                    to="/login"
-                                    className='px-4 py-2 rounded-2xl text-white font font-medium bg-gray-950 border-0 hover:shadow-[0_0_12px_4px_rgba(168,85,247,0.6)] transition-shadow '
-                                >
-                                 Login
-                                </Link>
-                            </div>)
-                        }
+                        {/* Mobile Menu Button */}
                         <motion.button
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}
                             onClick={() => setIsMenuOpen(!isMenuOpen)}
                             className="md:hidden p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                         >
-
-                            {isMenuOpen ? <X className='h-6 w-6'></X> : <Menu className='h-6 w-6'></Menu>}
+                            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
                         </motion.button>
-
                     </div>
                 </div>
             </div>
+
+            {/* Mobile Menu */}
             <AnimatePresence>
                 {isMenuOpen && (
                     <motion.div
@@ -185,21 +205,22 @@ function Navbar(props) {
                     >
                         <div className="px-4 py-2 space-y-1">
                             {navItems.map((item) => {
-                                const Icon = item.icon
+                                const Icon = item.icon;
                                 return (
                                     <Link
                                         key={item.path}
                                         to={item.path}
                                         onClick={() => setIsMenuOpen(false)}
-                                        className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors duration-200 ${location.pathname === item.path
+                                        className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors duration-200 ${
+                                            location.pathname === item.path
                                                 ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
                                                 : 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-800'
-                                            }`}
+                                        }`}
                                     >
                                         <Icon className="w-5 h-5" />
                                         <span className="font-medium">{item.name}</span>
                                     </Link>
-                                )
+                                );
                             })}
                         </div>
                     </motion.div>

@@ -1,53 +1,85 @@
-import { createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut } from 'firebase/auth';
+import { 
+    createUserWithEmailAndPassword, 
+    GoogleAuthProvider, 
+    onAuthStateChanged, 
+    signInWithEmailAndPassword, 
+    signInWithPopup, 
+    signOut 
+} from 'firebase/auth';
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { auth } from '../config/firebase';
 
- const AuthContext = createContext(null); 
-export const useAuth=()=>useContext(AuthContext);
+const AuthContext = createContext(null);
+export const useAuth = () => useContext(AuthContext);
 
-const provider=new GoogleAuthProvider()
+const provider = new GoogleAuthProvider();
+
 function AuthProvider({ children }) {
-    
     const [user, setUser] = useState(null);
-   
     const [loading, setLoading] = useState(true);
 
-    const createUser=(email,password)=>{
+    const createUser = (email, password) => {
         setLoading(true);
-        return createUserWithEmailAndPassword(auth,email,password);
-    }
-    const signInWithEmailPass=(email,password)=>{
+        return createUserWithEmailAndPassword(auth, email, password);
+    };
+
+    const signInWithEmailPass = (email, password) => {
         setLoading(true);
-        return signInWithEmailAndPassword(auth,email,password);
-    }
-    const signInwithGmail=()=>{
+        return signInWithEmailAndPassword(auth, email, password);
+    };
+
+    const signInwithGmail = () => {
         setLoading(true);
-        return signInWithPopup(auth,provider);
-    }
-    const signOutUser=()=>{
+        return signInWithPopup(auth, provider);
+    };
+
+    const signOutUser = async () => {
         setLoading(true);
+        await fetch('http://localhost:3000/logout', {
+            method: 'POST',
+            credentials: 'include'
+        });
         return signOut(auth);
-    }
-    useEffect(()=>{
-        const unsubscribed=onAuthStateChanged(auth,currentuser=>{
+    };
+
+    useEffect(() => {
+        const unsubscribed = onAuthStateChanged(auth, async (currentuser) => {
             setUser(currentuser);
             setLoading(false);
-        })
+
+            try {
+                if (currentuser) {
+                    // Send email to backend to generate JWT cookie
+                    await fetch('http://localhost:3000/login', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        credentials: 'include',
+                        body: JSON.stringify({ email: currentuser.email })
+                    });
+                } else {
+                    await fetch('http://localhost:3000/logout', {
+                        method: 'POST',
+                        credentials: 'include'
+                    });
+                }
+            } catch (error) {
+                console.error('Auth sync error:', error);
+            }
+        });
+
         return unsubscribed;
-    },[])
+    }, []);
 
     const authInfo = {
-      user,
-      loading,setLoading,
-      signInWithEmailPass,
-      signInwithGmail,
-      createUser,
-      signOutUser,
-
+        user,
+        loading, setLoading,
+        signInWithEmailPass,
+        signInwithGmail,
+        createUser,
+        signOutUser
     };
 
     return (
-       
         <AuthContext.Provider value={authInfo}>
             {children}
         </AuthContext.Provider>

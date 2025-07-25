@@ -4,10 +4,10 @@ import { motion } from "motion/react"
 
 function States() {
   const [stats, setStats] = useState({
-    tutors: 0,
-    reviews: 0,
-    languages: 0,
-    users: 0
+    tutors: 15,
+    reviews: 194,
+    languages: 20,
+    users: 11
   });
 
   const [loading, setLoading] = useState(false);

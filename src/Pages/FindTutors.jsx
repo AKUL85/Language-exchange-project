@@ -2,20 +2,30 @@ import React, { useState } from 'react';
 import { useLoaderData, useParams } from 'react-router-dom';
 import { motion } from "motion/react"
 import { Search, Globe } from 'lucide-react';
-import TutorCard from './TutorCard'; // Assuming you have a TutorCard component
+import TutorCard from './TutorCard'; 
 
 function FindTutors() {
   const allData = useLoaderData();
   const { category } = useParams();
   const [searchTerm, setSearchTerm] = useState('');
 
-  const filteredTutors = allData.filter((tutor) => {
-    const lowerSearch = searchTerm.toLowerCase();
-    return (
-      tutor.name.toLowerCase().includes(lowerSearch) ||
-      tutor.language.toLowerCase().includes(lowerSearch)
-    );
-  });
+
+let filteredTutors = allData;
+
+if (category) {
+  filteredTutors = filteredTutors.filter(tutor =>
+    tutor.language.toLowerCase() === category.toLowerCase()
+  );
+}
+
+if (searchTerm.trim() !== '') {
+  const lowerSearch = searchTerm.toLowerCase();
+  filteredTutors = filteredTutors.filter(tutor =>
+    tutor.name.toLowerCase().includes(lowerSearch) ||
+    tutor.language.toLowerCase().includes(lowerSearch)
+  );
+}
+
 
   return (
     <div className="min-h-screen py-12">
