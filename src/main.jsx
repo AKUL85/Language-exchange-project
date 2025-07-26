@@ -15,19 +15,18 @@ import AuthProvider from './Auth/AuthProvider';
 import Home from './component/Home/Home'
 import AddTutorial from './Pages/AddTutorial';
 import FindTutors from './Pages/FindTutors';
-import TutorCard from './Pages/TutorCard';
 import TutorDetails from './Pages/TutorDetails';
 import MyTutorial from './Pages/MyTutorial';
 import MyBokedTutor from './Pages/MyBokedTutor';
 import ProtectedRoute from './Auth/ProtectedRoute';
 import ErrorPages from './Pages/ErrorPages';
-import { ThemeProvider } from './Auth/ThemeProvider';
-import ScrollToTop from './component/ScrollToTop';
+import ScrollToTop from './component/ScrollToTop'; // Import ScrollToTop
+
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Root></Root>,
-    errorElement:<ErrorPages></ErrorPages>,
+    errorElement: <ErrorPages></ErrorPages>,
     children: [
       {
         path: '/',
@@ -50,8 +49,8 @@ const router = createBrowserRouter([
         >
           <SignIn />
         </motion.div>
-      }
-      , {
+      },
+      {
         path: '/signup',
         element: <motion.div
           initial={{ opacity: 0, x: -20 }}
@@ -61,20 +60,19 @@ const router = createBrowserRouter([
         >
           <SignUp />
         </motion.div>
-      }, {
+      },
+      {
         path: '/add-tutorial',
         element: <ProtectedRoute>
           <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.3 }}
-        >
-          <AddTutorial></AddTutorial>
-        </motion.div>
-
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+          >
+            <AddTutorial />
+          </motion.div>
         </ProtectedRoute>
-
       },
       {
         path: '/find-tutors',
@@ -83,22 +81,8 @@ const router = createBrowserRouter([
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}
           transition={{ duration: 0.3 }}
-
         >
-          <FindTutors></FindTutors>
-        </motion.div>,
-
-        loader: () => fetch('https://language-exchange-server.onrender.com/tutors'),
-      },{
-          path: '/find-tutors/:category',
-        element: <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.95 }}
-          transition={{ duration: 0.3 }}
-
-        >
-          <FindTutors></FindTutors>
+          <FindTutors />
         </motion.div>,
         loader: () => fetch('https://language-exchange-server.onrender.com/tutors'),
       },
@@ -107,59 +91,58 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.3 }}
-          >
-            <TutorDetails />
-          </motion.div>
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.3 }}
+            >
+              <TutorDetails />
+            </motion.div>
           </ProtectedRoute>
         ),
         loader: async ({ params }) => {
-        
           const res = await fetch(`https://language-exchange-server.onrender.com/tutors/${params.id}`);
           if (!res.ok) {
             throw new Response("Failed to load tutor", { status: res.status });
           }
           return res.json();
         },
-      }
-      , {
+      },
+      {
         path: '/my-tutorials',
         element: <ProtectedRoute>
           <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: 20 }}
-          transition={{ duration: 0.3 }}
-        >
-          <MyTutorial></MyTutorial>
-        </motion.div>
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 20 }}
+            transition={{ duration: 0.3 }}
+          >
+            <MyTutorial />
+          </motion.div>
         </ProtectedRoute>
       },
       {
-        path:'/my-booked-tutors',
+        path: '/my-booked-tutors',
         element: <ProtectedRoute>
           <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: 20 }}
-          transition={{ duration: 0.3 }}
-        >
-          <MyBokedTutor></MyBokedTutor>
-        </motion.div>
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 20 }}
+            transition={{ duration: 0.3 }}
+          >
+            <MyBokedTutor />
+          </motion.div>
         </ProtectedRoute>
       }
-
     ]
   },
 ]);
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    
-      <ScrollToTop><AuthProvider><RouterProvider router={router} /></AuthProvider></ScrollToTop>
-    
+    <AuthProvider>
+      <RouterProvider router={router} />
+      <ScrollToTop /> 
+    </AuthProvider>
   </StrictMode>,
-)
+);
