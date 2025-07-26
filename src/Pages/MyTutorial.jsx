@@ -201,10 +201,10 @@ const handleDelete = async () => {
             className="text-center py-12"
           >
             <BookOpen className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">
               No Tutorials
             </h3>
-            <p className="text-gray-600 dark:text-gray-300 mb-6">
+            <p className="text-gray-600  mb-6">
               You haven't posted any programe yet. Start lunching tutorials!
             </p>
             <Link

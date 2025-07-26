@@ -19,7 +19,7 @@ function Hero(props) {
                                 {' '}Expert Tutors
                             </span>
                         </h1>
-                        <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 leading-relaxed">
+                        <p className="text-lg md:text-xl text-gray-600 dark:text-gray-500 leading-relaxed">
                             Connect with certified native speakers and professional language teachers.
                             Start your language learning journey in a friendly, supportive environment.
                         </p>

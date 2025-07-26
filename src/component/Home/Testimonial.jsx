@@ -103,12 +103,14 @@ function Testimonial(props) {
                 <Search className="w-5 h-5 mr-2" />
                 Find Your Tutor
               </Link>
-              <Link
+              {
+                !user?<Link
                 to="/signup"
                 className="inline-flex items-center justify-center px-8 py-3 border-2 border-white text-white font-semibold rounded-lg hover:bg-white hover:text-blue-600 transition-all duration-200"
               >
                 Get Started Free
-              </Link>
+              </Link>:""
+              }
             </div>
           </motion.div>
         </div>

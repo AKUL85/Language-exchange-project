@@ -192,10 +192,10 @@ function MyBokedTutor() {
             className="text-center py-12"
           >
             <BookOpen className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">
               No Booked Tutors Yet
             </h3>
-            <p className="text-gray-600 dark:text-gray-300 mb-6">
+            <p className="text-gray-600  mb-6">
               You haven't booked any tutors yet. Start exploring our amazing tutors!
             </p>
             <Link
