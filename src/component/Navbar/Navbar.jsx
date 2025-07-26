@@ -16,7 +16,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from '../../Auth/AuthProvider';
 
 import { toast } from 'react-toastify';
-import { useTheme } from '../../Auth/ThemeProvider';
+
 
 function Navbar() {
     const { user, signOutUser } = useAuth();
@@ -107,7 +107,7 @@ function Navbar() {
 
                     {/* Right Section */}
                     <div className="flex items-center space-x-3">
-                        {/* Dark Mode Toggle */}
+                        {/* Dark Mode Toggle
                         <motion.button
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}
@@ -115,7 +115,7 @@ function Navbar() {
                             onClick={toggleTheme} // Use context's toggleTheme
                         >
                             {theme === 'light' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-                        </motion.button>
+                        </motion.button> */}
 
                         {/* Profile / Login */}
                         {user ? (

@@ -22,6 +22,7 @@ import MyBokedTutor from './Pages/MyBokedTutor';
 import ProtectedRoute from './Auth/ProtectedRoute';
 import ErrorPages from './Pages/ErrorPages';
 import { ThemeProvider } from './Auth/ThemeProvider';
+import ScrollToTop from './component/ScrollToTop';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -157,8 +158,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <ThemeProvider>
-      <AuthProvider><RouterProvider router={router} /></AuthProvider>
-    </ThemeProvider>
+    
+      <ScrollToTop><AuthProvider><RouterProvider router={router} /></AuthProvider></ScrollToTop>
+    
   </StrictMode>,
 )
