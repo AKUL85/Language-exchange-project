@@ -20,7 +20,7 @@ import MyTutorial from './Pages/MyTutorial';
 import MyBokedTutor from './Pages/MyBokedTutor';
 import ProtectedRoute from './Auth/ProtectedRoute';
 import ErrorPages from './Pages/ErrorPages';
-import ScrollToTop from './component/ScrollToTop'; // Import ScrollToTop
+
 
 const router = createBrowserRouter([
   {
@@ -142,7 +142,7 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <AuthProvider>
       <RouterProvider router={router} />
-      <ScrollToTop /> 
+    
     </AuthProvider>
   </StrictMode>,
 );
