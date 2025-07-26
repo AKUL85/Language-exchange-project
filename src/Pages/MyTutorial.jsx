@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { BookOpen } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import UpdateModal from '../component/UpdateTutorial/UpdateModal';
+import LoadingSpinner from '../component/LoadingSpinner';
 
 function MyTutorial() {
   const { user } = useAuth();
@@ -19,7 +20,7 @@ function MyTutorial() {
     setLoading(true);
     setError(null);
 
-    fetch(`http://localhost:3000/tutors/email?email=${user.email}`, {
+    fetch(`https://language-exchange-server.onrender.com/tutors/email?email=${user.email}`, {
       credentials: 'include',
     })
       .then(async (res) => {
@@ -61,7 +62,7 @@ const handleDelete = async () => {
   try {
     setDeleting(true);
 
-    const res = await fetch(`http://localhost:3000/tutors/${emailData._id}`, {
+    const res = await fetch(`https://language-exchange-server.onrender.com/tutors/${emailData._id}`, {
       method: 'DELETE',
     });
 
@@ -101,9 +102,7 @@ const handleDelete = async () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-green-50 p-6">
-        <p className="text-xl text-gray-600 animate-pulse">Loading tutor data...</p>
-      </div>
+      <LoadingSpinner></LoadingSpinner>
     );
   }
 

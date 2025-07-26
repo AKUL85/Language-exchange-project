@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useAuth } from '../Auth/AuthProvider';
+import LoadingSpinner from '../component/LoadingSpinner';
 
 function AddTutorial() {
   const { user } = useAuth();
@@ -60,7 +61,7 @@ function AddTutorial() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('http://localhost:3000/tutors', {
+      const response = await fetch('https://language-exchange-server.onrender.com/tutors', {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
@@ -96,11 +97,9 @@ function AddTutorial() {
   };
 
   // Show loading state until user is available
-  if (!user) {
+  if (!user&& isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-      </div>
+      <LoadingSpinner></LoadingSpinner>
     );
   }
 

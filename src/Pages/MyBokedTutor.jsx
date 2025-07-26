@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import LoadingSpinner from '../component/LoadingSpinner';
 
 function MyBokedTutor() {
   const [bookedData, setBookedData] = useState([]);
@@ -29,7 +30,7 @@ function MyBokedTutor() {
     setLoading(true);
     setError(null);
 
-    fetch(`http://localhost:3000/bokedItem?email=${user.email}`,{
+    fetch(`https://language-exchange-server.onrender.com/bokedItem?email=${user.email}`,{
       credentials: 'include'
     })
       .then(res => {
@@ -67,9 +68,7 @@ function MyBokedTutor() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-      </div>
+      <LoadingSpinner></LoadingSpinner>
     );
   }
 

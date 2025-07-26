@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { X, Save, Image, Globe, DollarSign, FileText } from 'lucide-react'
+import LoadingSpinner from '../LoadingSpinner'
 
 function UpdateModal({ tutorial, onClose, onUpdate }) {
   const [formData, setFormData] = useState({
@@ -26,7 +27,7 @@ function UpdateModal({ tutorial, onClose, onUpdate }) {
   setIsLoading(true);
 
   try {
-    const res = await fetch(`http://localhost:3000/tutors/${formData._id}`, {
+    const res = await fetch(`https://language-exchange-server.onrender.com/tutors/${formData._id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -205,10 +206,7 @@ function UpdateModal({ tutorial, onClose, onUpdate }) {
                 className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
               >
                 {isLoading ? (
-                  <div className="flex items-center">
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-                    Updating...
-                  </div>
+                  <LoadingSpinner></LoadingSpinner>
                 ) : (
                   <div className="flex items-center">
                     <Save className="w-4 h-4 mr-2" />

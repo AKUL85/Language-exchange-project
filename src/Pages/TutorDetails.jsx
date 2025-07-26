@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useLoaderData } from 'react-router-dom';
+import { Link, useLoaderData, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
   Star, 
@@ -15,6 +15,7 @@ function TutorDetails() {
   const { user } = useAuth();
   const [isBooking, setIsBooking] = useState(false);
   const [bookingMessage, setBookingMessage] = useState('');
+  const navigate=useNavigate();
 
   if (!tutor) {
     return (
@@ -50,7 +51,7 @@ function TutorDetails() {
   };
 
   try {
-    const res = await fetch('http://localhost:3000/bokedItem', {
+    const res = await fetch('https://language-exchange-server.onrender.com/bokedItem', {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
@@ -59,6 +60,8 @@ function TutorDetails() {
 
     if (!res.ok) throw new Error(`Error: ${res.status}`);
     setBookingMessage('Tutor booked successfully!');
+    navigate('/my-booked-tutors')
+    
   } catch (err) {
     console.error('Booking failed:', err);
     setBookingMessage('Failed to book tutor. Try again later.');

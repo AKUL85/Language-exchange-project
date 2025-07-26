@@ -26,6 +26,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Root></Root>,
+    errorElement:<ErrorPages></ErrorPages>,
     children: [
       {
         path: '/',
@@ -86,7 +87,7 @@ const router = createBrowserRouter([
           <FindTutors></FindTutors>
         </motion.div>,
 
-        loader: () => fetch('http://localhost:3000/tutors'),
+        loader: () => fetch('https://language-exchange-server.onrender.com/tutors'),
       },{
           path: '/find-tutors/:category',
         element: <motion.div
@@ -98,7 +99,7 @@ const router = createBrowserRouter([
         >
           <FindTutors></FindTutors>
         </motion.div>,
-        loader: () => fetch('http://localhost:3000/tutors'),
+        loader: () => fetch('https://language-exchange-server.onrender.com/tutors'),
       },
       {
         path: '/tutor/:id',
@@ -116,7 +117,7 @@ const router = createBrowserRouter([
         ),
         loader: async ({ params }) => {
         
-          const res = await fetch(`http://localhost:3000/tutors/${params.id}`);
+          const res = await fetch(`https://language-exchange-server.onrender.com/tutors/${params.id}`);
           if (!res.ok) {
             throw new Response("Failed to load tutor", { status: res.status });
           }
@@ -148,9 +149,6 @@ const router = createBrowserRouter([
           <MyBokedTutor></MyBokedTutor>
         </motion.div>
         </ProtectedRoute>
-      },{
-        path:'*',
-        element:<ErrorPages></ErrorPages>
       }
 
     ]

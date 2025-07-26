@@ -1,6 +1,7 @@
 import { Globe, Star, TrendingUp, Users } from 'lucide-react';
 import React, { useState } from 'react';
 import { motion } from "motion/react"
+import LoadingSpinner from '../LoadingSpinner';
 
 function States() {
   const [stats, setStats] = useState({
@@ -44,7 +45,7 @@ function States() {
                   className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2"
                 >
                   {loading ? (
-                    <div className="animate-pulse bg-gray-300 h-8 w-16 mx-auto rounded"></div>
+                    <LoadingSpinner></LoadingSpinner>
                   ) : (
                     stat.value.toLocaleString()
                   )}
