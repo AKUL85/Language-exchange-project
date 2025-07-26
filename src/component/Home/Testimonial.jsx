@@ -2,7 +2,9 @@ import React from 'react';
 import { motion } from "motion/react"
 import { Search, Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../Auth/AuthProvider';
 function Testimonial(props) {
+     const {user}=useAuth()
      const testimonials = [
     {
       name: 'Sarah Johnson',
@@ -12,7 +14,7 @@ function Testimonial(props) {
       rating: 5
     },
     {
-      name: 'Michael Chen',
+      name: 'Ajmain',
       role: 'Software Engineer',
       image: 'https://images.pexels.com/photos/1516680/pexels-photo-1516680.jpeg?auto=compress&cs=tinysrgb&w=150',
       text: 'The flexibility to learn on my own schedule was perfect for my busy lifestyle.',

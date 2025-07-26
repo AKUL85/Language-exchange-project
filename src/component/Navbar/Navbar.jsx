@@ -20,7 +20,7 @@ import { toast } from 'react-toastify';
 
 function Navbar() {
     const { user, signOutUser } = useAuth();
-    const { theme, toggleTheme } = useTheme();
+    
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const location = useLocation();
