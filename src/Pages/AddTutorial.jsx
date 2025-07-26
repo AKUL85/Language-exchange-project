@@ -12,9 +12,11 @@ import {
 import toast from 'react-hot-toast';
 import { useAuth } from '../Auth/AuthProvider';
 import LoadingSpinner from '../component/LoadingSpinner';
+import { useNavigate } from 'react-router-dom';
 
 function AddTutorial() {
   const { user } = useAuth();
+  const navigate=useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -85,6 +87,7 @@ function AddTutorial() {
           response_time: '',
           lesson_type: '',
         });
+        navigate('/my-tutorials')
       } else {
         toast.error('Failed to add tutorial. Please try again.');
       }

@@ -104,7 +104,7 @@ function Testimonial(props) {
                 Find Your Tutor
               </Link>
               <Link
-                to="/register"
+                to="/signup"
                 className="inline-flex items-center justify-center px-8 py-3 border-2 border-white text-white font-semibold rounded-lg hover:bg-white hover:text-blue-600 transition-all duration-200"
               >
                 Get Started Free
