@@ -32,7 +32,45 @@ function TutorDetails() {
     );
   }
 
- const handleBookTutor = async () => {
+//  const handleBookTutor = async () => {
+//   if (!user?.email) {
+//     setBookingMessage('Please log in to book a tutor.');
+//     return;
+//   }
+
+//   setIsBooking(true);
+//   setBookingMessage('');
+
+//   // Destructure _id out of tutor and skip it
+//   const { _id, ...tutorDataWithoutId } = tutor;
+
+//   const bookingData = {
+//     ...tutorDataWithoutId,
+//     email: user.email,
+//     bookedAt: new Date().toISOString(),
+//   };
+
+//   try {
+//     const res = await fetch('https://language-exchange-server.onrender.com/bokedItem', {
+//       method: 'POST',
+//       credentials: 'include',
+//       headers: { 'Content-Type': 'application/json' },
+//       body: JSON.stringify(bookingData),
+//     });
+
+//     if (!res.ok) throw new Error(`Error: ${res.status}`);
+//     setBookingMessage('Tutor booked successfully!');
+//     navigate('/my-booked-tutors')
+    
+//   } catch (err) {
+//     console.error('Booking failed:', err);
+//     setBookingMessage('Failed to book tutor. Try again later.');
+//   } finally {
+//     setIsBooking(false);
+//   }
+// };
+
+const handleBookTutor = async () => {
   if (!user?.email) {
     setBookingMessage('Please log in to book a tutor.');
     return;
@@ -41,12 +79,12 @@ function TutorDetails() {
   setIsBooking(true);
   setBookingMessage('');
 
-  // Destructure _id out of tutor and skip it
   const { _id, ...tutorDataWithoutId } = tutor;
 
   const bookingData = {
     ...tutorDataWithoutId,
     email: user.email,
+    tutorId: tutor._id, // add tutorId to check duplicates
     bookedAt: new Date().toISOString(),
   };
 
@@ -58,10 +96,16 @@ function TutorDetails() {
       body: JSON.stringify(bookingData),
     });
 
+    // Check if server returned 409 for duplicate booking
+    if (res.status === 409) {
+      setBookingMessage('You already booked this tutor!');
+      return;
+    }
+
     if (!res.ok) throw new Error(`Error: ${res.status}`);
+
     setBookingMessage('Tutor booked successfully!');
-    navigate('/my-booked-tutors')
-    
+    navigate('/my-booked-tutors');
   } catch (err) {
     console.error('Booking failed:', err);
     setBookingMessage('Failed to book tutor. Try again later.');
@@ -69,7 +113,6 @@ function TutorDetails() {
     setIsBooking(false);
   }
 };
-
 
 
   return (
