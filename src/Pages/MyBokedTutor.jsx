@@ -9,7 +9,7 @@ import {
   Calendar,
   BookOpen 
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import LoadingSpinner from '../component/LoadingSpinner';
 
@@ -19,6 +19,7 @@ function MyBokedTutor() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [reviewingTutor, setReviewingTutor] = useState(null);
+  
 
   useEffect(() => {
     if (!user?.email) {
@@ -40,6 +41,8 @@ function MyBokedTutor() {
       .then(data => {
         setBookedData(data);
         setLoading(false);
+        
+
       })
       .catch(err => {
         console.error("Failed to fetch booked data:", err);
@@ -62,7 +65,7 @@ function MyBokedTutor() {
         )
       );
       setReviewingTutor(null);
-      toast.success("Review submitted successfully!");
+      alert("Review submitted successfully!");
     }, 1000);
   };
 

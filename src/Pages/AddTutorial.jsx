@@ -34,7 +34,6 @@ function AddTutorial() {
   });
   const [isLoading, setIsLoading] = useState(false);
 
-  // Sync formData with user data when user becomes available
   useEffect(() => {
     if (user?.email || user?.displayName) {
       setFormData((prev) => ({
@@ -71,7 +70,7 @@ function AddTutorial() {
       });
 
       if (response.ok) {
-        toast.success('Tutorial added successfully!');
+        alert('Tutorial added successfully!');
         setFormData({
           name: user?.displayName || '',
           email: user?.email || '',

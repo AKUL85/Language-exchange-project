@@ -69,6 +69,7 @@ function TutorDetails() {
     if (!res.ok) throw new Error(`Error: ${res.status}`);
 
     setBookingMessage('Tutor booked successfully!');
+    alert('Tutor booked successfully!')
     navigate('/my-booked-tutors');
   } catch (err) {
     console.error('Booking failed:', err);
