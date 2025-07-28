@@ -85,7 +85,7 @@ const router = createBrowserRouter([
         >
           <FindTutors />
         </motion.div>,
-        loader: () => fetch('http://localhost:3000/tutors'),
+        loader: () => fetch('https://language-exchange-server.onrender.com/tutors'),
       },
       {
         path: '/tutor/:id',
@@ -102,7 +102,7 @@ const router = createBrowserRouter([
           </ProtectedRoute>
         ),
         loader: async ({ params }) => {
-          const res = await fetch(`http://localhost:3000/tutors/${params.id}`);
+          const res = await fetch(`https://language-exchange-server.onrender.com/tutors/${params.id}`);
           if (!res.ok) {
             throw new Response("Failed to load tutor", { status: res.status });
           }
@@ -146,7 +146,7 @@ const router = createBrowserRouter([
         >
           <FindTutors />
         </motion.div>,
-        loader: () => fetch('http://localhost:3000/tutors'),
+        loader: () => fetch('https://language-exchange-server.onrender.com/tutors'),
       },
       
 

@@ -53,7 +53,7 @@ function TutorDetails() {
     };
 
     try {
-      const res = await fetch('http://localhost:3000/bokedItem', {
+      const res = await fetch('https://language-exchange-server.onrender.com/bokedItem', {
       method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
