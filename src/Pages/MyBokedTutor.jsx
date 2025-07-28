@@ -30,7 +30,7 @@ function MyBokedTutor() {
     setLoading(true);
     setError(null);
 
-    fetch(`https://language-exchange-server.onrender.com/bokedItem?email=${user.email}`,{
+    fetch(`http://localhost:3000/bokedItem?email=${user.email}`,{
       credentials: 'include'
     })
       .then(res => {

@@ -27,7 +27,7 @@ function UpdateModal({ tutorial, onClose, onUpdate }) {
   setIsLoading(true);
 
   try {
-    const res = await fetch(`https://language-exchange-server.onrender.com/tutors/${formData._id}`, {
+    const res = await fetch(`http://localhost:3000/tutors/${formData._id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

@@ -20,7 +20,8 @@ function MyTutorial() {
     setLoading(true);
     setError(null);
 
-    fetch(`https://language-exchange-server.onrender.com/tutors/email?email=${user.email}`, {
+    fetch(`http://localhost:3000
+/tutors/email?email=${user.email}`, {
       credentials: 'include',
     })
       .then(async (res) => {
@@ -62,7 +63,7 @@ const handleDelete = async () => {
   try {
     setDeleting(true);
 
-    const res = await fetch(`https://language-exchange-server.onrender.com/tutors/${emailData._id}`, {
+    const res = await fetch(`http://localhost:3000/tutors/${emailData._id}`, {
       method: 'DELETE',
     });
 

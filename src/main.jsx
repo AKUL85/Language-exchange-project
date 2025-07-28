@@ -22,6 +22,7 @@ import ProtectedRoute from './Auth/ProtectedRoute';
 import ErrorPages from './Pages/ErrorPages';
 
 
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -84,7 +85,7 @@ const router = createBrowserRouter([
         >
           <FindTutors />
         </motion.div>,
-        loader: () => fetch('https://language-exchange-server.onrender.com/tutors'),
+        loader: () => fetch('http://localhost:3000/tutors'),
       },
       {
         path: '/tutor/:id',
@@ -101,7 +102,7 @@ const router = createBrowserRouter([
           </ProtectedRoute>
         ),
         loader: async ({ params }) => {
-          const res = await fetch(`https://language-exchange-server.onrender.com/tutors/${params.id}`);
+          const res = await fetch(`http://localhost:3000/tutors/${params.id}`);
           if (!res.ok) {
             throw new Response("Failed to load tutor", { status: res.status });
           }
@@ -134,6 +135,21 @@ const router = createBrowserRouter([
           </motion.div>
         </ProtectedRoute>
       }
+      , {
+
+        path: '/find-tutors/:category?',
+        element: <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.95 }}
+          transition={{ duration: 0.3 }}
+        >
+          <FindTutors />
+        </motion.div>,
+        loader: () => fetch('http://localhost:3000/tutors'),
+      },
+      
+
     ]
   },
 ]);
@@ -142,7 +158,7 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <AuthProvider>
       <RouterProvider router={router} />
-    
+
     </AuthProvider>
   </StrictMode>,
 );

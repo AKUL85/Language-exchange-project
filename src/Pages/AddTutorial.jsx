@@ -63,7 +63,7 @@ function AddTutorial() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('https://language-exchange-server.onrender.com/tutors', {
+      const response = await fetch('http://localhost:3000/tutors', {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },

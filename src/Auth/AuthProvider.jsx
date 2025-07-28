@@ -35,7 +35,7 @@ function AuthProvider({ children }) {
 
     const signOutUser = async () => {
         setLoading(true);
-        await fetch('https://language-exchange-server.onrender.com/logout', {
+        await fetch('http://localhost:3000/logout', {
             method: 'POST',
             credentials: 'include'
         });
@@ -50,14 +50,14 @@ function AuthProvider({ children }) {
             try {
                 if (currentuser) {
                     // Send email to backend to generate JWT cookie
-                    await fetch('https://language-exchange-server.onrender.com/login', {
+                    await fetch('http://localhost:3000/login', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         credentials: 'include',
                         body: JSON.stringify({ email: currentuser.email })
                     });
                 } else {
-                    await fetch('https://language-exchange-server.onrender.com/logout', {
+                    await fetch('http://localhost:3000/logout', {
                         method: 'POST',
                         credentials: 'include'
                     });
